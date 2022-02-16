@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\Users\maddogg91\Desktop\AndroidApps\GitHub\firebasedemo\build\windows\CMakeFiles\a8a2ebff100340fc2587ba60b5aca7d9\flutter_windows.dll.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Users\maddogg91\Desktop\AndroidApps\GitHub\firebasedemo\build\windows\CMakeFiles\c31a105e41efe1c02746d225b37b8d9d\flutter_assemble.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Users\maddogg91\Desktop\AndroidApps\GitHub\firebasedemo\windows\flutter\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="D:\Users\maddogg91\Desktop\AndroidApps\GitHub\firebasedemo\build\windows\flutter\CMakeFiles\flutter_assemble" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{B8CC9AD3-7896-39C8-80AA-AABA128C345A}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

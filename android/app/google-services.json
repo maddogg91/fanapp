@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "819889425911",
+    "firebase_url": "https://dogg-fanpage-default-rtdb.firebaseio.com",
+    "project_id": "dogg-fanpage",
+    "storage_bucket": "dogg-fanpage.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:819889425911:android:139a5e11ca787f5ca632f2",
+        "android_client_info": {
+          "package_name": "com.mdgsdc.fanpage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "819889425911-i1vcia6b8kj191m6mjng69jccfkij097.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mdgsdc.fanpage",
+            "certificate_hash": "14186a87dc4418e61d8e9dcd2f93cfff4a03ec6d"
+          }
+        },
+        {
+          "client_id": "819889425911-v1hp9gh665utbb168k0t11edg4uga22v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATirpYvtFKvbsv0ZrqKxu5dxqNi5Am1ZM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "819889425911-v1hp9gh665utbb168k0t11edg4uga22v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
