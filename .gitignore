@@ -6,7 +6,7 @@
 *.tlog
 *.xcconfig
 **/project.xcworkspace
-*firebaseinstance.exe
+*firebase-tools-instance.exe
 
 # BlueJ files
 *.ctxt

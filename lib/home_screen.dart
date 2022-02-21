@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:async';
 
 User loggedinUser;
 FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -20,51 +19,89 @@ class HomeScreen extends StatefulWidget {
 class _WheelState extends State<Wheel> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Geeksforgeeks"),
-        backgroundColor: Colors.green,
-      ),
-      body: ListWheelScrollView(
-        itemExtent: 100,
-         
-        // diameterRatio: 1.6,
-        // offAxisFraction: -0.4,
-        // squeeze: 0.8,
-       children: <Widget>[
-         RaisedButton(onPressed:null ,
-       child: Text("Item 1",textAlign:TextAlign.start,
-            style:TextStyle(color:Colors.black,fontWeight: FontWeight.bold,fontSize: 25),),) ,
-       RaisedButton(onPressed:null ,
-       child: Text("Item 2",textAlign:TextAlign.center,
-            style:TextStyle(color:Colors.black,fontWeight: FontWeight.bold,fontSize: 25),),) ,
-       RaisedButton(onPressed:null ,
-       child: Text("Item 3",textAlign:TextAlign.center,
-            style:TextStyle(color:Colors.black,fontWeight: FontWeight.bold,fontSize: 25),),) ,
-       RaisedButton(onPressed:null ,
-       child: Text("Item 4",textAlign:TextAlign.center,
-            style:TextStyle(color:Colors.black,fontWeight: FontWeight.bold,fontSize: 25),),) ,
-       RaisedButton(onPressed:null ,
-       child: Text("Item 5",textAlign:TextAlign.center,
-            style:TextStyle(color:Colors.black,fontWeight: FontWeight.bold,fontSize: 25),),) ,
-       RaisedButton(onPressed:null ,
-       child: Text("Item 6",textAlign:TextAlign.center,
-            style:TextStyle(color:Colors.black,fontWeight: FontWeight.bold,fontSize: 25),),) ,
-       RaisedButton(onPressed:null ,
-       child: Text("Item 7",textAlign:TextAlign.center,
-            style:TextStyle(color:Colors.black,fontWeight: FontWeight.bold,fontSize: 25),),) ,
-       RaisedButton(onPressed:null ,
-       child: Text("Item 8",textAlign:TextAlign.center,
-            style:TextStyle(color:Colors.black,fontWeight: FontWeight.bold,fontSize: 25),),) ,
-       ],
-      ),
+	   final _auth = FirebaseAuth.instance;
+	 return StreamBuilder<QuerySnapshot>(
+    stream: firestore.collection('admin-messages').snapshots(),
+		builder: (context, snap){
+			if(!snap.hasData){
+				return Scaffold(
+				);
+    
+   
+			}
+			else if(snap.hasData){
+			final List<DocumentSnapshot> documents= snap.data.docs;
+			return Scaffold(
+				
+				appBar: AppBar(
+					title: Text("Messages from Maddogg"),
+					backgroundColor: Colors.red,
+					actions: <Widget>[
+							IconButton(
+								icon: Icon(Icons.close),
+								onPressed: () {
+									return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Do you want to logout?'),
+          
+          actions: <Widget>[
+            FlatButton(
+              color: Colors.red,
+              textColor: Colors.white,
+              child: Text('CANCEL'),
+              onPressed: () {
+                setState(() {
+                  Navigator.pop(context);
+                });
+              },
+            ),
+            FlatButton(
+              color: Colors.green,
+              textColor: Colors.white,
+              child: Text('LOGOUT'),
+              onPressed: () {
+                setState(() {
+                 _auth.signOut();
+                });
+              },
+            ),
+
+          ],
+        );
+      });
+									
+									//Implement logout functionality
+								}),
+							],
+					),
+					
+					body: ListView.builder(
+  padding: const EdgeInsets.all(8),
+  itemCount: documents.length,
+  itemBuilder: (BuildContext context, int index) {
+    return Container(
+      height: 50,
+      color: Colors.amber[index*100],
+      child: Center(child: Text('Entry #$index: ${documents[index].get("message")}')),
     );
+  }
+)
+);
+
+			} 
+}
+  );
   }
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+	AnimationController controller;
   TextEditingController _textFieldController = TextEditingController();
   final _auth = FirebaseAuth.instance;
+  String test;
+  
   void initState() {
     super.initState();
     getCurrentUser();
@@ -84,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
   
   
    Future<void> addMessage(String valueText) {
-				 CollectionReference message= FirebaseFirestore.instance.collection('admin-messages');
+				 CollectionReference message= firestore.collection('admin-messages');
 				// Call the admin-messages CollectionReference to add a new message
 				return message
 					.add({
@@ -140,79 +177,79 @@ class _HomeScreenState extends State<HomeScreen> {
       });
 }
 
-String getIsAdmin(){
-	final user = _auth.currentUser;
-	final String email= user.email;
-	print(email);
-	FirebaseFirestore.instance.collection('users')
-							.where('email', isEqualTo: email).get().then((QuerySnapshot documentSnapshot) {
-								if(documentSnapshot.size > 0){
-									print(documentSnapshot.size);
-									return 't';
-									
-								}
-							});
-}
-
   String codeDialog;
   String valueText;
+  @override
+  
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-	String admin= getIsAdmin();
-	Timer(Duration(seconds: 3), () {
-  if(admin== 't'){
-	print(admin);
-	return Scaffold(
-      appBar: AppBar(
-        leading: null,
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(Icons.close),
-              onPressed: () {
-                _auth.signOut();
-                Navigator.pop(context);
-
-                //Implement logout functionality
-              }),
-        ],
-        title: Text('Home Page'),
-        backgroundColor: Colors.black,
-      ),
-      body: Center(
-        child: Text(
-          "Welcome Admin $email",
-          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-        ),
-		
-      ),
-	  floatingActionButtonLocation:FloatingActionButtonLocation.centerDocked,
-	  floatingActionButton: FloatingActionButton.extended(
-		onPressed:(){
-		_displayTextInputDialog(context);
-		},
-		label: Text('+'),
-		backgroundColor: Colors.red,
-		),
+		final user = _auth.currentUser;
+		final String email= user.email;
+	   return StreamBuilder<QuerySnapshot>(
+		stream: firestore.collection('users').where('email', isEqualTo: email).snapshots(),
+		builder: (context, snapshot){
+			if(!snapshot.hasData){
+				return Scaffold(
+    
     );
-	}
-	else{
-			return MaterialApp(
-      title: 'ListWheelScrollView Example',
-      theme: ThemeData(
+			}
+			else if(snapshot.hasData){
+			final List<DocumentSnapshot> documents= snapshot.data.docs;
+			for(var i = 0; i < documents.length; i++){
+				String checkEmail= documents[i].get("email");
+				if(checkEmail==email){
+					return Scaffold(
+						appBar: AppBar(
+							leading: null,
+							actions: <Widget>[
+							IconButton(
+								icon: Icon(Icons.close),
+								onPressed: () {
+									_auth.signOut();
+									Navigator.pop(context);
+									//Implement logout functionality
+								}),
+							],
+							title: Text('Home Page'),
+							backgroundColor: Colors.black,
+						),
+						body: Center(
+							child: Text(
+								"Welcome Admin $email",
+								style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+							),
+						),
+						floatingActionButtonLocation:FloatingActionButtonLocation.centerDocked,
+						floatingActionButton: FloatingActionButton.extended(
+						onPressed:(){
+							_displayTextInputDialog(context);
+						},
+						label: Text('+'),
+						backgroundColor: Colors.red,
+					),
+				);
+				}
+			}
+				print(email);
+				return MaterialApp(
+					title: 'Maddoggs Fan Page',
+					theme: ThemeData(
+					primarySwatch: Colors.blue,
+					),
+				debugShowCheckedModeBanner: false,
+				home: Wheel(),
+				);
+			
+			}
+		 else if (snapshot.hasError){
+			return Text('Its an Error');
+		}
+		});
+  }
+}
          
-        primarySwatch: Colors.blue,
-      ),
-      debugShowCheckedModeBanner: false,
-      home: Wheel(),
-    );
-}
-	
-
-      
-  });
-}	
-	
-     
-   
-}
